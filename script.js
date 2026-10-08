@@ -1505,6 +1505,10 @@ const app = {
     const wrap = document.querySelector('#question-text .hint-wrap');
     if (!q || !q.hint || !wrap) return;
     this.hintShown = true;
+    // Hint use is saved in the attempt's event log → the dashboard shows who
+    // opened which hint (Marcos 10/8: "add hint tracking to dashboard")
+    logEvent('hint', { id: q.id });
+    this.saveProgress();
     wrap.outerHTML = hintBoxHTML(q.hint, true);
     const btn = document.querySelector('#question-text .hint-speak-btn');
     if (btn) btn.focus();
