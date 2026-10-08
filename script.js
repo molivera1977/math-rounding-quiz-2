@@ -34,13 +34,18 @@ const SESSION_ID = (() => {
 })();
 
 const isReview = form => form === 'A';
-const isPractice = form => form === 'P';
+// E = Practice A (easier: counting, benchmarks, halfway) · P = Practice B (the full steps)
+const isPractice = form => form === 'E' || form === 'P';
 // Practice and Review teach (answer + why + number line); the official quiz does not
 const teaches = form => form !== 'B';
-const FORM_NAMES = { P: 'Practice', A: 'Review (Form A)', B: 'Official Quiz (Form B)' };
+const FORM_NAMES = { E: 'Practice A', P: 'Practice B', A: 'Review (Form A)', B: 'Official Quiz (Form B)' };
 function formOpen(form) { return isPractice(form) ? PRACTICE_OPEN : isReview(form) ? REVIEW_OPEN : QUIZ_OPEN; }
 /* Sheet / dashboard game key — one per form */
-function gameKey(form) { return isPractice(form) ? 'rounding2-practice' : isReview(form) ? 'rounding2-review' : 'rounding2-quiz'; }
+function gameKey(form) {
+  // Practice B keeps the original key so the 10/7 attempts stay in the same tab
+  return form === 'E' ? 'rounding2-practice-a' : form === 'P' ? 'rounding2-practice'
+    : isReview(form) ? 'rounding2-review' : 'rounding2-quiz';
+}
 
 /* ── SHEET SUBMISSION ───────────────────────────────── */
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzv8CWv1yyi8NeH04now9UxVL4IZm5yMqqsEGMcgGdrcAOWVB-aSp5siTvSSJXIUpzFMA/exec';
@@ -60,7 +65,7 @@ function missEntry(m) {
 
 /* Form P is the practice; Form A is the review; Form B is the official quiz — a second Form B is a retake. */
 function formLabel(attempt) {
-  if (isPractice(app.currentForm)) return 'Practice';
+  if (isPractice(app.currentForm)) return FORM_NAMES[app.currentForm];
   if (isReview(app.currentForm)) return 'Form A — Review';
   return (attempt || 1) > 1 ? 'Form B — Retake' : 'Form B — Official Quiz';
 }
@@ -385,7 +390,7 @@ function addHighlightFallback(u, spans) {
 /* ── ATTEMPT TRACKING ───────────────────────────────── */
 function getFormAttempts(name) {
   const scores = JSON.parse(localStorage.getItem(SCORES_KEY) || '[]');
-  const counts = { P: 0, A: 0, B: 0 };
+  const counts = { E: 0, P: 0, A: 0, B: 0 };
   scores.filter(s => s.name === name && s.done).forEach(s => {
     if (counts[s.form] !== undefined) counts[s.form]++;
   });
@@ -412,6 +417,14 @@ function practiceFinished(name) {
   return getFormAttempts(name).P > 0;
 }
 
+/* Practice A (Marcos 10/7) comes before Practice B. Practice B opens after a
+   finished Practice A — or for anyone who already finished Practice B before
+   Practice A existed. */
+function practiceBReady(name) {
+  const a = getFormAttempts(name);
+  return a.E > 0 || a.P > 0;
+}
+
 /* A form that is not open yet shows a gray "Not open yet" button. */
 function setFormButton(form, label, sub, waiting) {
   const btn = document.getElementById('btn-form-' + form);
@@ -433,13 +446,16 @@ function applyFormLocks(name) {
   const startCard = document.getElementById('quiz-start-card');
   const doneCard  = document.getElementById('completed-container');
   const retake    = document.getElementById('retake-card');
-  setFormButton('P', '🧭 Practice',
-    a.P === 0 ? '16 questions · step by step' : '🔁 Practice again any time');
+  setFormButton('E', '🌱 Practice A',
+    a.E === 0 ? '20 questions · the easy start' : '🔁 Practice again any time');
+  setFormButton('P', '🧭 Practice B',
+    a.P === 0 ? '16 questions · step by step' : '🔁 Practice again any time',
+    practiceBReady(name) ? '' : 'Finish Practice A first');
   setFormButton('A', '📘 Review (Form A)',
     a.A === 0 ? '20 questions · 2 tries'
     : a.A === 1 ? '🔁 Attempt 2 available'
     : '🔒 2/2 attempts used · Teacher PIN for more',
-    practiceFinished(name) ? '' : 'Finish the Practice first');
+    practiceFinished(name) ? '' : 'Finish Practice B first');
   const revBtn = document.getElementById('btn-form-A');
   if (revBtn && formOpen('A') && practiceFinished(name) && a.A >= 2) revBtn.classList.add('locked');
   setFormButton('B', '📝 Take the Official Quiz (Form B)', '20 questions · one try',
@@ -787,7 +803,17 @@ const app = {
 
   /* ── ATTEMPT START ── */
   attemptStart(form) {
-    if (!this.studentName || !['P', 'A', 'B'].includes(form) || !formOpen(form)) return;
+    if (!this.studentName || !['E', 'P', 'A', 'B'].includes(form) || !formOpen(form)) return;
+    // Practice B waits for Practice A; the Teacher PIN can skip that
+    if (form === 'P' && !practiceBReady(this.studentName)) {
+      this.showPinModal(
+        '🌱 Practice A First',
+        `${getFirstName(this.studentName)}, finish Practice A before you start Practice B. ` +
+        `Teachers: enter your PIN to let this student skip Practice A.`,
+        () => this.startSession('P')
+      );
+      return;
+    }
     // The official quiz is one try — a finished one needs a Teacher-PIN retake
     if (form === 'B' && quizCompleted(this.studentName)) { applyFormLocks(this.studentName); return; }
     // The quiz waits for one finished review; the Teacher PIN can skip that
@@ -803,8 +829,8 @@ const app = {
     // The review waits for one finished practice; the Teacher PIN can skip that
     if (form === 'A' && !practiceFinished(this.studentName)) {
       this.showPinModal(
-        '🧭 Practice First',
-        `${getFirstName(this.studentName)}, finish the Practice before you start the review. ` +
+        '🧭 Practice B First',
+        `${getFirstName(this.studentName)}, finish Practice B before you start the review. ` +
         `Teachers: enter your PIN to let this student skip the practice.`,
         () => this.startSession('A')
       );
@@ -849,8 +875,8 @@ const app = {
   },
 
   _showReviewPicker() {
-    const form = prompt('Choose a form to review:\n1 — Practice\n2 — Form A (Review)\n3 — Form B (Official Quiz)\n\nEnter 1, 2 or 3:');
-    const map = { '1': 'P', '2': 'A', '3': 'B' };
+    const form = prompt('Choose a form to review:\n1 — Practice A\n2 — Practice B\n3 — Form A (Review)\n4 — Form B (Official Quiz)\n\nEnter 1, 2, 3 or 4:');
+    const map = { '1': 'E', '2': 'P', '3': 'A', '4': 'B' };
     if (!map[form]) { alert('Invalid choice.'); reviewMode = false; return; }
     const mode = prompt('Choose review mode:\n1 — Manual (tap Next each question)\n2 — Auto-run (fully automatic)\n\nEnter 1 or 2:');
     if (mode !== '1' && mode !== '2') { alert('Invalid choice.'); reviewMode = false; return; }
@@ -1393,7 +1419,7 @@ const app = {
     const againBtn = document.getElementById('end-again-btn');
     if (againBtn) againBtn.classList.toggle('hidden', reviewMode);
     document.getElementById('end-title').textContent =
-      isPractice(this.currentForm) ? '🎉 Practice Complete!' : isReview(this.currentForm) ? '🎉 Review Complete!' : '🎉 Quiz Complete!';
+      isPractice(this.currentForm) ? `🎉 ${FORM_NAMES[this.currentForm]} Complete!` : isReview(this.currentForm) ? '🎉 Review Complete!' : '🎉 Quiz Complete!';
 
     document.getElementById('final-score-sub').textContent =
       `${formLabel(attemptNum)}${attemptNum > 1 ? ' · Attempt ' + attemptNum : ''} · ${this.studentName}`;
@@ -1435,7 +1461,8 @@ const app = {
     const q = this.currentBank[this.currentIndex];
     if (!q) return;
 
-    const spokenText = convertToSpokenText(q.q);
+    // the hint box is read aloud after the question (class reads mostly at Level 1)
+    const spokenText = convertToSpokenText(q.q + (q.hint ? ' Hint: ' + q.hint : ''));
     const qtEl = document.getElementById('question-text');
     const originalWords = q.q.split(/\s+/);
 
@@ -1484,7 +1511,7 @@ const app = {
     }
     noEl.style.display = 'none';
 
-    const forms = ['P', 'A', 'B'];
+    const forms = ['E', 'P', 'A', 'B'];
 
     const summaryCards = forms.map(form => {
       const best = all.filter(s => s.form === form && s.done)
@@ -1598,7 +1625,7 @@ const app = {
   printResults() {
     const all = JSON.parse(localStorage.getItem(SCORES_KEY) || '[]');
     if (!all.length) { alert('No scores to print yet!'); return; }
-    const rows = ['P','A','B'].flatMap(form =>
+    const rows = ['E','P','A','B'].flatMap(form =>
       all.filter(s => s.form === form).map(r => {
         const cc  = r.pct >= 80 ? 'good' : r.pct >= 60 ? 'ok' : 'bad';
         const att = r.attempt || 1;

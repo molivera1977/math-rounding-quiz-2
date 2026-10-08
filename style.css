@@ -676,3 +676,10 @@ button.answer-btn.incorrect { background: #f8d7da; border-color: #dc3545; color:
 .practice-dir h3 { color: #117864; }
 .nl-q { stroke: #b9770e; stroke-width: 3; stroke-dasharray: 5 3; }
 .nl-label-q { fill: #b9770e; font-size: 24px; }
+
+/* ── PRACTICE A (Form E, the easy start) ── */
+.start-btn.practice-a-btn { background: #27ae60; box-shadow: 0 5px 0 #1e8449; }
+.start-btn.practice-a-btn:hover { box-shadow: 0 8px 0 #1e8449; }
+#practice-a-card .step-label { color: #1e8449; }
+.practice-a-dir    { background: #eafaf1; border-color: #82e0aa; }
+.practice-a-dir h3 { color: #1e8449; }

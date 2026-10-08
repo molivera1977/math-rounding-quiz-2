@@ -5,11 +5,33 @@
    Every skill rolls up to 4.NBT.3 (round multi-digit numbers).
    The skills follow the district rounding model: benchmarks →
    halfway → place the number → distances → round → estimate.
-   Practice (P) uses the same skill names. Form A (review) and Form B (quiz) use the same skill in
+   Practice A (E) and Practice B (P) use the same skill names where they overlap. Form A (review) and Form B (quiz) use the same skill in
    the same slot, so review → quiz compares skill by skill.
 ═══════════════════════════════════════════════════════ */
 window.SKILLS = {
-  // Practice (Form P): four numbers × four steps, same skill names as the review and quiz
+  // Practice A (Form E, the easy start, 10/7): counting, benchmarks, easy halfway, easy rounding
+  E01: "Count by tens, hundreds, thousands",
+  E02: "Find the two benchmarks",
+  E03: "Find the benchmark before the number",
+  E04: "Find the two benchmarks",
+  E05: "Count by tens, hundreds, thousands",
+  E06: "Find the two benchmarks",
+  E07: "Find the two benchmarks",
+  E08: "Find the benchmark before the number",
+  E09: "Find the two benchmarks",
+  E10: "How far apart the benchmarks are",
+  E11: "Find the benchmark before the number",
+  E12: "Find the benchmark before the number",
+  E13: "How far apart the benchmarks are",
+  E14: "Find the halfway point",
+  E15: "Find the halfway point",
+  E16: "Find the halfway point",
+  E17: "Round to the place named",
+  E18: "Round to the place named",
+  E19: "Round to the place named",
+  E20: "Round to the place named",
+
+  // Practice B (Form P): four numbers × four steps, same skill names as the review and quiz
   P01: "Find the two benchmarks",
   P02: "Find the halfway point",
   P03: "Which benchmark is closer",
