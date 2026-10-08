@@ -364,11 +364,19 @@ function stopActiveSpeech() {
   if (activeSpeakBtn) { activeSpeakBtn.textContent = '🔊'; activeSpeakBtn = null; }
 }
 
-/* ── HINT BOX (Marcos 10/7: speaker buttons on all hints) ──
-   The hint gets its own 🔊 on the LEFT, same toggle as every other
-   speaker: tap to play, tap to stop, tap again to restart. Every word
-   (including "Hint:") is a span so the highlight follows the voice. */
-function hintBoxHTML(hint) {
+/* ── HINT BOX (Marcos 10/7) ──
+   "The hints should not play automatically. They should be there if
+   needed." Until the student taps 💡 Need a hint?, only that button shows
+   and nothing is read. Once opened, the hint has its own 🔊 on the LEFT,
+   same toggle as every other speaker (tap to play, tap to stop, tap again
+   to restart); every word (including "Hint:") is a span for the highlight.
+   The question's 🔊 reads the question only. */
+function hintBoxHTML(hint, shown) {
+  if (!shown) {
+    return `<div class="hint-wrap"><button type="button" class="hint-reveal-btn" ` +
+      `aria-label="Show a hint" onclick="event.stopPropagation(); app.showHint()">` +
+      `💡 Need a hint?</button></div>`;
+  }
   const words = ('Hint: ' + hint).split(/\s+/)
     .map(w => `<span class="wrd">${formatMathText(w)}</span>`).join(' ');
   return `<div class="hint-box"><button type="button" class="speak-btn hint-speak-btn" ` +
@@ -1222,7 +1230,8 @@ const app = {
     // Question text
     const qtEl = document.getElementById('question-text');
     let qHTML = formatMathText(q.q);
-    if (q.hint) qHTML += hintBoxHTML(q.hint);
+    this.hintShown = false;   // every question starts with the hint closed
+    if (q.hint) qHTML += hintBoxHTML(q.hint, false);
     qtEl.innerHTML = qHTML;
     // Number-line picture lives outside #question-text, so speakQuestion's
     // word-wrapping never touches it
@@ -1489,6 +1498,17 @@ const app = {
   },
 
   /* ── SPEAK QUESTION ── */
+  /* 💡 Need a hint? → open the hint box (not read aloud until its own 🔊 is tapped) */
+  showHint() {
+    const q = this.currentBank && this.currentBank[this.currentIndex];
+    const wrap = document.querySelector('#question-text .hint-wrap');
+    if (!q || !q.hint || !wrap) return;
+    this.hintShown = true;
+    wrap.outerHTML = hintBoxHTML(q.hint, true);
+    const btn = document.querySelector('#question-text .hint-speak-btn');
+    if (btn) btn.focus();
+  },
+
   speakQuestion() {
     const qBtn = document.getElementById('speak-q-btn');
     if (activeSpeakBtn === qBtn) { stopActiveSpeech(); return; }
@@ -1500,7 +1520,8 @@ const app = {
     if (!q) return;
 
     // the hint box is read aloud after the question (class reads mostly at Level 1)
-    const spokenText = convertToSpokenText(q.q + (q.hint ? ' Hint: ' + q.hint : ''));
+    // the question only — a hint is read by its own 🔊, and only after the student opens it
+    const spokenText = convertToSpokenText(q.q);
     const qtEl = document.getElementById('question-text');
     const originalWords = q.q.split(/\s+/);
 
@@ -1508,7 +1529,7 @@ const app = {
     originalWords.forEach((w, i) => {
       qHTML += `<span class="wrd" id="wrd${i}">${formatMathText(w)}</span> `;
     });
-    if (q.hint) qHTML += hintBoxHTML(q.hint);
+    if (q.hint) qHTML += hintBoxHTML(q.hint, this.hintShown);
     qtEl.innerHTML = qHTML;
 
     const hlSpans = originalWords.map((_, i) => document.getElementById('wrd' + i));
