@@ -1,6 +1,7 @@
 /* ═══════════════════════════════════════════════════════
-   ROUNDING REVIEW AND QUIZ 2 · script.js
-   Copy of Rounding Review and Quiz 1's engine (math-rounding-quiz) plus
+   ROUNDING REVIEW AND QUIZ - NUMBERLINE EDITION · script.js
+   (named "Rounding Review and Quiz 2" 10/6; renamed 10/8)
+   Copy of Rounding Review and Quiz - The Mechanics Edition's engine (math-rounding-quiz) plus
    number lines (district rounding model: benchmarks → halfway → place
    the number → compare distances). Game keys rounding2-review /
    rounding2-quiz, storage prefix rnd2_. One site with two forms:
@@ -1702,14 +1703,14 @@ const app = {
         </tr>`;
       })
     ).join('');
-    const html = `<html><head><title>Rounding Review and Quiz 2 Scores</title>
+    const html = `<html><head><title>Rounding Review and Quiz - Numberline Edition Scores</title>
       <style>body{font-family:Arial;padding:20px;}h2{color:#d35400;}
       table{width:100%;border-collapse:collapse;margin-top:12px;}
       th,td{border:1px solid #ccc;padding:8px 12px;text-align:center;}
       th{background:#d35400;color:white;}
       .good{color:green;font-weight:bold;}.ok{color:orange;font-weight:bold;}.bad{color:red;font-weight:bold;}</style>
       </head><body>
-      <h2>🎯 Rounding Review and Quiz 2 — Score Report</h2>
+      <h2>🎯 Rounding Review and Quiz - Numberline Edition — Score Report</h2>
       <p>Printed: ${new Date().toLocaleString()}</p>
       <table><tr><th>Name</th><th>Form</th><th>Attempt</th><th>Score</th><th>%</th><th>Time</th><th>Date</th></tr>${rows}</table>
       </body></html>`;
