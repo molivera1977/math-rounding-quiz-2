@@ -364,6 +364,44 @@ function stopActiveSpeech() {
   if (activeSpeakBtn) { activeSpeakBtn.textContent = '🔊'; activeSpeakBtn = null; }
 }
 
+/* ── HINT BOX (Marcos 10/7: speaker buttons on all hints) ──
+   The hint gets its own 🔊 on the LEFT, same toggle as every other
+   speaker: tap to play, tap to stop, tap again to restart. Every word
+   (including "Hint:") is a span so the highlight follows the voice. */
+function hintBoxHTML(hint) {
+  const words = ('Hint: ' + hint).split(/\s+/)
+    .map(w => `<span class="wrd">${formatMathText(w)}</span>`).join(' ');
+  return `<div class="hint-box"><button type="button" class="speak-btn hint-speak-btn" ` +
+    `title="Read the hint aloud" aria-label="Read the hint aloud" ` +
+    `onclick="event.stopPropagation(); speakHint(this)">🔊</button>` +
+    `<span class="hint-text"><span aria-hidden="true">💡</span> ${words}</span></div>`;
+}
+
+function speakHint(btn) {
+  if (activeSpeakBtn === btn) { stopActiveSpeech(); return; }
+  stopActiveSpeech();
+  const q = app.currentBank && app.currentBank[app.currentIndex];
+  if (!q || !q.hint) return;
+  const spans = Array.from(btn.parentElement.querySelectorAll('.wrd'));
+  activeSpeakBtn = btn;
+  btn.textContent = '⏹';
+  const u = new SpeechSynthesisUtterance(convertToSpokenText('Hint: ' + q.hint));
+  u.lang = 'en-US'; u.rate = 0.92;
+  let hlIdx = 0;
+  u.onboundary = e => {
+    if (e.name !== 'word') return;
+    spans.forEach(el => el.classList.remove('hl'));
+    if (spans[hlIdx]) spans[hlIdx].classList.add('hl');
+    hlIdx++;
+  };
+  u.onend = () => {
+    spans.forEach(el => el.classList.remove('hl'));
+    if (activeSpeakBtn === btn) { btn.textContent = '🔊'; activeSpeakBtn = null; }
+  };
+  addHighlightFallback(u, spans);
+  window.speechSynthesis.speak(u);
+}
+
 /* ── HIGHLIGHT FALLBACK ─────────────────────────────
    Some voices (and some browsers) never fire word-boundary
    events, so the highlight would never move. If no boundary
@@ -1184,7 +1222,7 @@ const app = {
     // Question text
     const qtEl = document.getElementById('question-text');
     let qHTML = formatMathText(q.q);
-    if (q.hint) qHTML += `<div style="font-size:0.85rem;color:#666;background:#f0f0f0;border-radius:8px;padding:6px 10px;margin-top:8px;">💡 Hint: ${q.hint}</div>`;
+    if (q.hint) qHTML += hintBoxHTML(q.hint);
     qtEl.innerHTML = qHTML;
     // Number-line picture lives outside #question-text, so speakQuestion's
     // word-wrapping never touches it
@@ -1470,7 +1508,7 @@ const app = {
     originalWords.forEach((w, i) => {
       qHTML += `<span class="wrd" id="wrd${i}">${formatMathText(w)}</span> `;
     });
-    if (q.hint) qHTML += `<div style="font-size:0.85rem;color:#666;background:#f0f0f0;border-radius:8px;padding:6px 10px;margin-top:8px;">💡 Hint: ${q.hint}</div>`;
+    if (q.hint) qHTML += hintBoxHTML(q.hint);
     qtEl.innerHTML = qHTML;
 
     const hlSpans = originalWords.map((_, i) => document.getElementById('wrd' + i));

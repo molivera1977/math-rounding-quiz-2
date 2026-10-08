@@ -683,3 +683,11 @@ button.answer-btn.incorrect { background: #f8d7da; border-color: #dc3545; color:
 #practice-a-card .step-label { color: #1e8449; }
 .practice-a-dir    { background: #eafaf1; border-color: #82e0aa; }
 .practice-a-dir h3 { color: #1e8449; }
+
+/* ── HINT BOX with its own speaker (10/7) ── */
+.hint-box {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.9rem; font-weight: 600; color: #555; line-height: 1.5;
+  background: #f0f0f0; border-radius: 8px; padding: 6px 10px; margin-top: 8px;
+}
+.hint-box .hint-speak-btn { font-size: 1rem; min-width: 36px; padding: 4px 8px; background: #fff; }
