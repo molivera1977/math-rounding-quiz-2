@@ -699,3 +699,17 @@ button.answer-btn.incorrect { background: #f8d7da; border-color: #dc3545; color:
   padding: 5px 14px; cursor: pointer;
 }
 .hint-reveal-btn:hover, .hint-reveal-btn:focus-visible { background: #ffefc2; outline: none; border-style: solid; }
+
+/* ── PART BANNER (10/8) — which part the student is on ── */
+.part-banner {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-size: 1.35rem; font-weight: 900; color: #fff; letter-spacing: .3px;
+  border-radius: 14px; padding: 10px 14px; margin-bottom: 12px;
+  box-shadow: 0 4px 0 rgba(0,0,0,.15);
+}
+.part-banner:empty { display: none; }
+.part-banner.pb-practice-a { background: #1e8449; }
+.part-banner.pb-practice   { background: #117a65; }
+.part-banner.pb-review     { background: #2471a3; }
+.part-banner.pb-quiz       { background: #a04000; }
+.part-banner .pb-teacher   { font-size: .8rem; font-weight: 700; opacity: .9; }

@@ -411,6 +411,20 @@ function speakHint(btn) {
   window.speechSynthesis.speak(u);
 }
 
+/* ── PART BANNER (Marcos 10/8: "I want to be able to know which part the
+   students are on") — a big colored label on top of every question:
+   the step number and the part's name, one color per part. ── */
+const PART_BANNER = { E: ['🌱', 'Step 2 · Practice A', 'pb-practice-a'], P: ['🧭', 'Step 3 · Practice B', 'pb-practice'], A: ['📘', 'Step 4 · Review', 'pb-review'], B: ['📝', 'Step 5 · Official Quiz', 'pb-quiz'] };
+function setPartBanner(form) {
+  const el = document.getElementById('part-banner');
+  const p = PART_BANNER[form];
+  if (!el || !p) return;
+  const retake = form === 'B' && !reviewMode && upcomingAttempt() > 1;
+  el.className = 'part-banner ' + p[2];
+  el.innerHTML = `<span aria-hidden="true">${p[0]}</span> ${p[1]}${retake ? ' — Retake' : ''}` +
+    (reviewMode ? ' <span class="pb-teacher">(teacher view)</span>' : '');
+}
+
 /* ── HIGHLIGHT FALLBACK ─────────────────────────────
    Some voices (and some browsers) never fire word-boundary
    events, so the highlight would never move. If no boundary
@@ -1219,6 +1233,7 @@ const app = {
 
   /* ── RENDER QUESTION ── */
   renderQuestion() {
+    setPartBanner(this.currentForm);
     const q     = this.currentBank[this.currentIndex];
     const total = this.currentBank.length;
 
