@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rounding Review and Quiz - Numberline Edition: Benchmarks and Halfway Points</title>
-  <link rel="stylesheet" href="style.css?v=r2k" />
+  <link rel="stylesheet" href="style.css?v=r2l" />
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
@@ -51,9 +51,9 @@
         </div>
       </div>
 
-      <!-- STEP 1 — SIGN IN -->
+      <!-- SIGN IN (not numbered — the activities are Steps 1, 2, 3 …; Marcos 10/8) -->
       <div class="step-card" id="login-step-card">
-        <span class="step-label">Step 1 — Sign In</span>
+        <span class="step-label">Sign In</span>
         <div class="login-box">
           <label for="name-select">👤 Select your name:</label>
           <select id="name-select" onchange="app.onNameSelect()">
@@ -76,12 +76,12 @@
         </div>
       </div>
 
-      <!-- STEP 2 — PRACTICE A (Form E, easier) · STEP 3 — PRACTICE B (Form P) · STEP 4 — REVIEW (Form A) · STEP 5 — THE OFFICIAL QUIZ (Form B; Teacher-PIN retakes) -->
+      <!-- STEP 1 — PRACTICE A (Form E, easier) · STEP 2 — PRACTICE B (Form P) · STEP 3 — REVIEW (Form A) · STEP 4 — THE OFFICIAL QUIZ (Form B; Teacher-PIN retakes) -->
       <div id="form-select-section" class="hidden">
 
         <!-- Practice A — the easy start: count by tens/hundreds, find the benchmarks, easy halfway; as many tries as they like -->
         <div class="step-card" id="practice-a-card">
-          <span class="step-label">Step 2 — Practice A</span>
+          <span class="step-label">Step 1 — Practice A</span>
           <div class="start-grid">
             <button class="start-btn practice-a-btn" id="btn-form-E" onclick="app.attemptStart('E')">🌱 Practice A<span class="form-btn-sub">20 questions · the easy start</span></button>
           </div>
@@ -90,7 +90,7 @@
 
         <!-- Practice B — the full number-line steps; as many tries as they like -->
         <div class="step-card" id="practice-card">
-          <span class="step-label">Step 3 — Practice B</span>
+          <span class="step-label">Step 2 — Practice B</span>
           <div class="start-grid">
             <button class="start-btn practice-btn" id="btn-form-P" onclick="app.attemptStart('P')">🧭 Practice B<span class="form-btn-sub">16 questions · step by step</span></button>
           </div>
@@ -99,7 +99,7 @@
 
         <!-- Review — 2 tries, then Teacher PIN -->
         <div class="step-card" id="review-card">
-          <span class="step-label">Step 4 — Review</span>
+          <span class="step-label">Step 3 — Review</span>
           <div class="start-grid">
             <button class="start-btn review-btn" id="btn-form-A" onclick="app.attemptStart('A')">📘 Review (Form A)<span class="form-btn-sub">20 questions · 2 tries</span></button>
           </div>
@@ -108,7 +108,7 @@
 
         <!-- Not taken yet → start the official quiz -->
         <div class="step-card" id="quiz-start-card">
-          <span class="step-label">Step 5 — The Official Quiz</span>
+          <span class="step-label">Step 4 — The Official Quiz</span>
           <div class="start-grid">
             <button class="start-btn" id="btn-form-B" onclick="app.attemptStart('B')">📝 Take the Official Quiz (Form B)<span class="form-btn-sub">20 questions · one try</span></button>
           </div>
@@ -193,7 +193,7 @@
     <div class="dir-section login-dir">
       <div class="dir-row">
         <button class="speak-btn" onclick="speakDir(this)">🔊</button>
-        <h3 style="margin:0;">👤 Step 1 — Sign In</h3>
+        <h3 style="margin:0;">👤 Sign In</h3>
       </div>
       <p class="dir-text">Choose your name from the list, then enter your student number and tap Sign In. Guest students will also enter their first name.</p>
     </div>
@@ -201,7 +201,7 @@
     <div class="dir-section practice-a-dir">
       <div class="dir-row">
         <button class="speak-btn" onclick="speakDir(this)">🔊</button>
-        <h3 style="margin:0;">🌱 Step 2 — Practice A</h3>
+        <h3 style="margin:0;">🌱 Step 1 — Practice A</h3>
       </div>
       <p class="dir-text">Start here. Practice A is the easy start. You will count by tens and hundreds. You will find the two benchmarks a number is between. You will find halfway. After each answer you will see the right answer and why. Every question has a hint. If you get stuck, tap the Need a hint button. Tap the speaker by the hint to hear it. You can do it as many times as you like.</p>
     </div>
@@ -209,7 +209,7 @@
     <div class="dir-section practice-dir">
       <div class="dir-row">
         <button class="speak-btn" onclick="speakDir(this)">🔊</button>
-        <h3 style="margin:0;">🧭 Step 3 — Practice B</h3>
+        <h3 style="margin:0;">🧭 Step 2 — Practice B</h3>
       </div>
       <p class="dir-text">Practice B uses all the steps. Find the two benchmarks. Find halfway. See which benchmark is closer. Then round. It opens after Practice A. Every question has a hint. If you get stuck, tap the Need a hint button. You can do it as many times as you like.</p>
     </div>
@@ -217,7 +217,7 @@
     <div class="dir-section form-dir">
       <div class="dir-row">
         <button class="speak-btn" onclick="speakDir(this)">🔊</button>
-        <h3 style="margin:0;">📘 Step 4 — Review (Form A)</h3>
+        <h3 style="margin:0;">📘 Step 3 — Review (Form A)</h3>
       </div>
       <p class="dir-text">The review has 20 questions about rounding. After each answer you will see the right answer, why, and a number line that shows it. The review opens after you finish Practice B. You get 2 tries on the review.</p>
     </div>
@@ -225,7 +225,7 @@
     <div class="dir-section attempts-dir">
       <div class="dir-row">
         <button class="speak-btn" onclick="speakDir(this)">🔊</button>
-        <h3 style="margin:0;">🔒 Step 5 — The Official Quiz (Form B)</h3>
+        <h3 style="margin:0;">🔒 Step 4 — The Official Quiz (Form B)</h3>
       </div>
       <p class="dir-text">The official quiz opens after you finish the review at least once. It has 20 questions. After each answer you will see if it is correct or not quite, but the right answer is not shown. You take the quiz one time. When you finish, it locks. Only your teacher can unlock a retake, so do your best work the first time.</p>
     </div>
@@ -408,6 +408,6 @@
 <script src="data/form_a.js?v=r2d"></script>
 <script src="data/form_b.js?v=r2d"></script>
 <script src="data/skills.js?v=r2d"></script>
-<script src="script.js?v=r2k"></script>
+<script src="script.js?v=r2l"></script>
 </body>
 </html>

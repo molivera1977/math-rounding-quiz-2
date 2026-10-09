@@ -414,7 +414,7 @@ function speakHint(btn) {
 /* ── PART BANNER (Marcos 10/8: "I want to be able to know which part the
    students are on") — a big colored label on top of every question:
    the step number and the part's name, one color per part. ── */
-const PART_BANNER = { E: ['🌱', 'Step 2 · Practice A', 'pb-practice-a'], P: ['🧭', 'Step 3 · Practice B', 'pb-practice'], A: ['📘', 'Step 4 · Review', 'pb-review'], B: ['📝', 'Step 5 · Official Quiz', 'pb-quiz'] };
+const PART_BANNER = { E: ['🌱', 'Step 1 · Practice A', 'pb-practice-a'], P: ['🧭', 'Step 2 · Practice B', 'pb-practice'], A: ['📘', 'Step 3 · Review', 'pb-review'], B: ['📝', 'Step 4 · Official Quiz', 'pb-quiz'] };
 function setPartBanner(form) {
   const el = document.getElementById('part-banner');
   const p = PART_BANNER[form];
