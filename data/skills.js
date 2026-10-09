@@ -4,7 +4,7 @@
    dashboard can rank skills (Focus next / Strongest).
    Every skill rolls up to 4.NBT.3 (round multi-digit numbers).
    The skills follow the district rounding model: benchmarks →
-   halfway → place the number → distances → round → estimate.
+   halfway → place the number → distances → round. (No estimation — Marcos 10/8: "I want the focus to only be rounding.")
    Practice A (E) and Practice B (P) use the same skill names where they overlap. Form A (review) and Form B (quiz) use the same skill in
    the same slot, so review → quiz compares skill by skill.
 ═══════════════════════════════════════════════════════ */
@@ -67,8 +67,8 @@ window.SKILLS = {
   A16: "Round to the place named",
   A17: "Which numbers round to it",
   A18: "Same number, different places",
-  A19: "Estimate with rounding",
   A20: "Why the shortcut works",
+  A21: "Rounding down stays at the lower benchmark",   // replaced A19 (estimation), 10/8
 
   B01: "Find the two benchmarks",
   B02: "Find the two benchmarks",
@@ -88,6 +88,6 @@ window.SKILLS = {
   B16: "Round to the place named",
   B17: "Which numbers round to it",
   B18: "Same number, different places",
-  B19: "Estimate with rounding",
   B20: "Why the shortcut works",
+  B21: "Rounding down stays at the lower benchmark",   // replaced B19 (estimation), 10/8
 };

@@ -53,8 +53,8 @@ window.FORM_B = [
   { id:"B18", q:"Round 47,385 to the nearest hundred.", choices:["47,400","47,000","47,390","47,300"], answer:"47,400", model:{ n:47385, place:100 },
     explanation:"To the nearest hundred, 47,385 lives between 47,300 and 47,400. Halfway is 47,350. 47,385 is past halfway, so it rounds up to 47,400." },
 
-  { id:"B19", q:"Round each number to the nearest hundred, then subtract to estimate: 8,742 − 3,186", choices:["5,500","5,600","5,000","5,556"], answer:"5,500",
-    explanation:"8,742 rounds to 8,700. 3,186 rounds to 3,200. 8,700 − 3,200 = 5,500. The exact answer, 5,556, is close to 5,500, so it makes sense." },
+  { id:"B21", q:"Round 72,318 to the nearest thousand.", choices:["72,000","71,000","73,000","72,300"], answer:"72,000", model:{ n:72318, place:1000 },
+    explanation:"72,318 lives between 72,000 and 73,000. Halfway is 72,500. 72,318 is before halfway, so it rounds down to 72,000. Rounding down keeps the 2. It does not go down to 71,000." },
 
   { id:"B20", q:"When you round to the nearest thousand, why do you look at the hundreds digit?", choices:["It tells you if the number is past halfway","It tells you how many thousands there are","It is always the biggest digit","It tells you which digits become zero"], answer:"It tells you if the number is past halfway", model:{ n:35682, place:1000 },
     explanation:"Halfway between two thousands is 500. In 35,682 the hundreds digit is 6, which means 600. 600 is past 500, so 35,682 rounds up to 36,000. A hundreds digit of 5 or more means halfway or past." },

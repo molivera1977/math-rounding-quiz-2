@@ -3,6 +3,7 @@
    Built from the district video "Teaching Rounding in Grades 3 and 4":
    find the two benchmarks → find halfway → place the number →
    compare distances → only then the digit shortcut (A20).
+   A19/B19 (estimation) were replaced by A21/B21 on 10/8 — rounding only.
    Aimed at what Quiz 1 showed (10/6): rounding to the wrong place,
    "it starts with 5 so it's 5,000", "round down = the digit goes down",
    and halfway points.
@@ -60,8 +61,8 @@ window.FORM_A = [
   { id:"A18", q:"Round 68,749 to the nearest hundred.", choices:["68,700","69,000","68,800","68,750"], answer:"68,700", model:{ n:68749, place:100 },
     explanation:"Same number, new place, new benchmarks! To the nearest hundred, 68,749 lives between 68,700 and 68,800. Halfway is 68,750. 68,749 is just before halfway, so it rounds down to 68,700." },
 
-  { id:"A19", q:"Round each number to the nearest hundred, then add to estimate: 3,476 + 2,812", choices:["6,300","6,200","6,000","6,288"], answer:"6,300",
-    explanation:"3,476 rounds to 3,500. 2,812 rounds to 2,800. 3,500 + 2,800 = 6,300. The exact answer, 6,288, is close to 6,300, so it makes sense." },
+  { id:"A21", q:"Round 41,276 to the nearest thousand.", choices:["41,000","40,000","42,000","41,300"], answer:"41,000", model:{ n:41276, place:1000 },
+    explanation:"41,276 lives between 41,000 and 42,000. Halfway is 41,500. 41,276 is before halfway, so it rounds down to 41,000. Rounding down keeps the 1. It does not go down to 40,000." },
 
   { id:"A20", q:"When you round to the nearest hundred, why do you look at the tens digit?", choices:["It tells you if the number is past halfway","It tells you how many hundreds there are","It is always the biggest digit","It tells you which digits become zero"], answer:"It tells you if the number is past halfway", model:{ n:3476, place:100 },
     explanation:"Halfway between two hundreds is 50. In 3,476 the tens digit is 7, which means 70. 70 is past 50, so 3,476 is past halfway and rounds up to 3,500. A tens digit of 5 or more means halfway or past." },
