@@ -713,3 +713,9 @@ button.answer-btn.incorrect { background: #f8d7da; border-color: #dc3545; color:
 .part-banner.pb-review     { background: #2471a3; }
 .part-banner.pb-quiz       { background: #a04000; }
 .part-banner .pb-teacher   { font-size: .8rem; font-weight: 700; opacity: .9; }
+
+/* Finish screen (Marcos 10/14): Sign Out is quieter than the main buttons, and each button says where it goes */
+.signout-btn { background:none; border:2px solid #ccc; border-radius:10px; color:#666; font-family:inherit;
+               font-size:0.95rem; font-weight:700; padding:8px 16px; cursor:pointer; }
+.signout-btn:hover { border-color:#999; color:#333; }
+.signout-sub { display:block; font-size:0.8rem; font-weight:600; color:#888; margin-top:2px; }
